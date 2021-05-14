@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public int health = 100;
     public float moveSpeed;
     public Rigidbody2D rb;
     public Transform firePoint;
@@ -51,5 +53,16 @@ public class PlayerMovement : MonoBehaviour
     void Shoot()
     {
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0) Die();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
