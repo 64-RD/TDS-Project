@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 
     public int health = 100;
     public GameObject bulletPrefab;
-    public GameObject player; // gracz , z pocz¹tku on jest celem
+    public GameObject player; // gracz , z poczï¿½tku on jest celem
     public Transform firePoint;
     public float waitTime;
 
@@ -56,7 +56,6 @@ public class Enemy : MonoBehaviour
 
     public void Shoot()
     {
-        
         firePoint.transform.Rotate(0,0, Random.Range(-10.0f, 10.0f));
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation );
     } 

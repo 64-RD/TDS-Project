@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     public int health = 100;
