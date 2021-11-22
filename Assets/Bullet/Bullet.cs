@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 20f;
-    public int damage = 25;
+    public float speed = 15f;
+    public int constDamage = 25;
     public Rigidbody2D rb;
     
     // Start is called before the first frame update
@@ -18,6 +19,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D hit)
     {
+        int damage = constDamage + Random.Range(-10, 10);
         Enemy enemy = hit.GetComponent<Enemy>();
         if (enemy != null)
         {
