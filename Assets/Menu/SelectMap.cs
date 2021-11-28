@@ -10,7 +10,7 @@ public class SelectMap : MonoBehaviour
     public void Map1()
     {
         Debug.Log("Map1 Selected");
-        //TODO
+        SceneManager.LoadScene("SampleScene");
     }
     public void Map2()
     {

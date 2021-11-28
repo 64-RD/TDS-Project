@@ -12,10 +12,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - NotTransparent
+  - Mask
+  - Player
+  - Black
   - 
   - 
   - 

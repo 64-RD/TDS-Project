@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     public int health = 100;
@@ -14,11 +14,18 @@ public class PlayerMovement : MonoBehaviour
     public GameObject bulletPrefab;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
+    [SerializeField] public FieldOfView FOV;
+    public float FOV_angle;
+    public float FOV_distance;
     
     // Update is called once per frame
     void Update()
     {
         ProcessInputs();
+        FOV.SetAimDirection(this.transform.up);
+        FOV.SetOrigin(transform.position);
+        FOV.SetViewDistance(FOV_distance);
+        FOV.SetFoV(FOV_angle);
     }
 
     private void FixedUpdate()

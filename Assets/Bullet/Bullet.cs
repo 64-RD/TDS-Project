@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
         {
             enemy.TakeDamage(damage);
         }
-        PlayerMovement player  = hit.GetComponent<PlayerMovement>();
+        Player player  = hit.GetComponent<Player>();
         if (player != null)
         {
             player.TakeDamage(damage);
