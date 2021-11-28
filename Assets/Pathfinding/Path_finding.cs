@@ -20,7 +20,9 @@ public class Pathfinding
                 grid.SetValue(UtilsClass.GetMouseWorldPosition(), 1);
             }
         }
-    
+        
+        
+        //public List<Vector2> 
 
 
 }

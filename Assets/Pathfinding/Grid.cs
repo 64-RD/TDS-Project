@@ -5,7 +5,7 @@ using CodeMonkey.Utils;
 using UnityEngine.Tilemaps;
 
 
-public class Grid
+public class Grid :MonoBehaviour
 {
     private int width;
     private int height; 
@@ -85,7 +85,7 @@ public class Grid
         return new Vector2(Mathf.FloorToInt(worldPosition.x / cellSize)-shiftwidth, Mathf.FloorToInt(worldPosition.y / cellSize)-shiftheight);
     }
 
-    private void setTilemaps(string name)
+    public void setTilemaps(string name)
     {
         GameObject obj = GameObject.Find(name);
         Tilemap tilemap = obj.GetComponent<Tilemap>();
@@ -100,7 +100,7 @@ public class Grid
                 TileBase tile = allTiles[x + y * bounds.size.x];
                 if (tile != null)
                 {
-                    grid.SetValue(x, y, -1);
+                    SetValue(x, y, -1);
                 }
 
             }
@@ -109,12 +109,12 @@ public class Grid
 
     private void A_star(int x,int y)
     {
-        List<Vector2> open = new List<Vector2>();
+        //List<Vector2> open = new List<Vector2>();
         visited[x, y] = 1;
         float distance = this.distance[x, y];
         SetMinDistanceValue(x, y, distance);
 
-        open.Add(new Vector2(x, y));
+        //open.Add(new Vector2(x, y));
 
         //while(open.Count > 0)
         for (int i = x - 1; i <= x + 1; i++)
@@ -148,8 +148,9 @@ public class Grid
                 }
             }
         }
-
-        A_star(min_x, min_y);
+        
+        if(min_v != 1000000000)
+            A_star(min_x, min_y);
 
    
 
@@ -195,15 +196,39 @@ public class Grid
         Vector2 position = World2Grid(worldPosition);
         int x =(int) position.x;
         int y =(int) position.y;
-        int cnt = 100;
-        while(distance[x,y]!=0 || cnt==0)
+        while(distance[x,y]!=0 )
         {
             debugArray[x,y].text = "X";
             Vector2 minNeighbourCord = findMinNeighbour(x, y);
             x = (int)minNeighbourCord.x;
             y =(int) minNeighbourCord.y;
-            cnt--;
         }
 
+    }
+
+    public List<Vector3> FindPath(Vector3 startPosition, Vector3 endPosition)
+    {
+        List<Vector3> vectorPath = new List<Vector3>();
+        Vector2 start = World2Grid(startPosition);
+        Vector2 end = World2Grid(endPosition);
+        clear();
+        distance[(int)start.x, (int)start.y] = 0;
+        A_star((int)start.x, (int)start.y);
+        int x = (int)end.x;
+        int y = (int)end.y;
+        int z = (int)startPosition.z;
+
+        Vector2 wordCords = Grid2World(x, y);
+        vectorPath.Add(new Vector3(wordCords.x, wordCords.y, startPosition.z));
+        while (distance[x, y] != 0)
+        {
+            Vector2 minNeighbourCord = findMinNeighbour(x, y);
+            x = (int)minNeighbourCord.x;
+            y = (int)minNeighbourCord.y;
+            wordCords = Grid2World(x, y);
+            vectorPath.Add(new Vector3(wordCords.x, wordCords.y, startPosition.z));
+        }
+
+        return vectorPath;
     }
 }
