@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Search;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    public int health = 100;
+    public int maxHealth = 100;
+    public int health;
+    public HealthBar healthBar;
     public float moveSpeed;
     public Rigidbody2D rb;
     public Transform firePoint;
@@ -18,6 +20,12 @@ public class Player : MonoBehaviour
     public float FOV_angle;
     public float FOV_distance;
     
+
+    void Start()
+    {
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -65,7 +73,11 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health <= 0) Die();
+        health = health <= 0 ? 0 : health;
+        healthBar.SetHealth(health);
+
+        if(health == 0)
+            Die();
     }
 
     private void Die()
