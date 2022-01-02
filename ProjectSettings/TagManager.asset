@@ -9,14 +9,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BOT
   - Water
   - UI
-  - NotTransparent
+  - Map
   - Mask
   - Player
   - Black
-  - 
+  - Bushes
   - 
   - 
   - 
@@ -41,4 +41,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: non-colison
+    uniqueID: 2021031807
+    locked: 0
+  - name: prefabs
+    uniqueID: 2241093035
+    locked: 0
+  - name: bushes
+    uniqueID: 602771601
+    locked: 0
+  - name: colision
+    uniqueID: 3973008203
     locked: 0

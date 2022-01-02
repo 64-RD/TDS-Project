@@ -7,7 +7,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public int health = 100;
+    public int health = 1000;
+
     public float moveSpeed;
     public Rigidbody2D rb;
     public Transform firePoint;
@@ -17,21 +18,27 @@ public class Player : MonoBehaviour
     [SerializeField] public FieldOfView FOV;
     public float FOV_angle;
     public float FOV_distance;
+    public bool isDie=false;
     
     // Update is called once per frame
     void Update()
     {
         ProcessInputs();
-        FOV.SetAimDirection(this.transform.up);
-        FOV.SetOrigin(transform.position);
-        FOV.SetViewDistance(FOV_distance);
-        FOV.SetFoV(FOV_angle);
+        if (FOV != null)
+        {
+            FOV.SetAimDirection(this.transform.up);
+            FOV.SetOrigin(transform.position);
+            FOV.SetViewDistance(FOV_distance);
+            FOV.SetFoV(FOV_angle);
+        }
     }
 
     private void FixedUpdate()
     {
         Move();
     }
+
+
 
     void ProcessInputs()
     {
@@ -70,6 +77,29 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDie = true;
+        //Destroy(gameObject);
+    }
+
+    public void respawn()
+    {
+        isDie = false;
+        health = 1000;
+        //transform.position = new Vector3(35.0f, 25.0f, 0.0f);
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       Color color =  collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+        color = new Color(color.r, color.g, color.b, 0.5f);
+
+        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+        color = new Color(color.r, color.g, color.b, 1f);
+
+        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
     }
 }

@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     private Vector3 targetPos; //pozycja celu
     private Vector3 thisPos;
     private float angle;
-    private float currentTime=0;
+    public float currentTime=0;
 
     public void Start()
     {
@@ -25,22 +25,24 @@ public class Enemy : MonoBehaviour
     public void Update()
     {
         
-        targetPos = player.transform.position;
+       /* targetPos = player.transform.position;
         thisPos = transform.position;
         targetPos.x = targetPos.x - thisPos.x;
         targetPos.y = targetPos.y - thisPos.y;
         angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle -90));
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle -90));*/
 
-        if(currentTime>=waitTime)
+        /*if(currentTime>=waitTime)
         {
-            Shoot();
+            //Shoot();
             currentTime = 0;
         }
         else
         {
             currentTime += 1 * Time.deltaTime;
-        }
+        }*/
+
+        currentTime += 1 * Time.deltaTime;
     }
 
     public void TakeDamage(int damage)
@@ -56,7 +58,11 @@ public class Enemy : MonoBehaviour
 
     public void Shoot()
     {
-        firePoint.transform.Rotate(0,0, Random.Range(-10.0f, 10.0f));
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation );
+        if (currentTime >= waitTime)
+        {
+            currentTime = 0;
+            //firePoint.transform.Rotate(0,0, Random.Range(-10.0f, 10.0f));
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        }
     } 
 }
