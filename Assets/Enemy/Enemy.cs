@@ -4,50 +4,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
-    public int health = 100;
-    public GameObject bulletPrefab;
-    public GameObject player; // gracz , z pocz�tku on jest celem
-    public Transform firePoint;
-    public float waitTime;
-
-  
-    private Vector3 targetPos; //pozycja celu
-    private Vector3 thisPos;
-    private float angle;
-    public float currentTime=0;
-
-    public void Start()
-    {
-        //player = GameObject.FindWithTag("Player");
-    }
+    protected float health = 100f;
+    public Weapon weapon;
+    public GameObject player; // gracz, z początku on jest celem
+    protected float speed = 1.0f;
+    protected float damageResist = 1.0f;
 
     public void Update()
     {
-        
-       /* targetPos = player.transform.position;
-        thisPos = transform.position;
+        Vector3 targetPos = player.transform.position;
+        Vector3 thisPos = transform.position;
         targetPos.x = targetPos.x - thisPos.x;
         targetPos.y = targetPos.y - thisPos.y;
-        angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle -90));*/
-
-        /*if(currentTime>=waitTime)
-        {
-            //Shoot();
-            currentTime = 0;
-        }
-        else
-        {
-            currentTime += 1 * Time.deltaTime;
-        }*/
-
-        currentTime += 1 * Time.deltaTime;
+        float angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        weapon.TryShoot();
     }
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        health -= (damage * damageResist);
         if (health <= 0) Die();
     }
 
@@ -55,14 +31,4 @@ public class Enemy : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    public void Shoot()
-    {
-        if (currentTime >= waitTime)
-        {
-            currentTime = 0;
-            //firePoint.transform.Rotate(0,0, Random.Range(-10.0f, 10.0f));
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        }
-    } 
 }

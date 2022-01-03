@@ -6,9 +6,16 @@ using Random = UnityEngine.Random;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 15f;
+    private float speed = 20f;
+    private int damage = 25;
     public int constDamage = 25;
     public Rigidbody2D rb;
+
+    public void initBullet(float speed, int damage)
+    {
+        this.speed = speed;
+        this.damage = damage;
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -26,8 +33,10 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+            return;
         }
-        Player player  = hit.GetComponent<Player>();
+
+        Player player = hit.GetComponent<Player>();
         if (player != null)
         {
             player.TakeDamage(damage);
