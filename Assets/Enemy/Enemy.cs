@@ -21,6 +21,11 @@ public class Enemy : MonoBehaviour
         weapon.TryShoot();
     }
 
+    public void Shoot()
+    {
+        weapon.TryShoot();
+    }
+
     public void TakeDamage(int damage)
     {
         health -= (damage * damageResist);

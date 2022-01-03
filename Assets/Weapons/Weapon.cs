@@ -16,7 +16,6 @@ public class Weapon : MonoBehaviour
     public void Init()
     {
         bulletsLeft = magazineSize;
-        Debug.Log("szatan");
         allowFire = true;
         isInit = true;
     }

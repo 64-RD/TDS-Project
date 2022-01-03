@@ -16,7 +16,6 @@ public class Bullet : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
     }
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -28,22 +27,22 @@ public class Bullet : MonoBehaviour
     {
         int damage = constDamage + Random.Range(-10, 10);
         Enemy enemy = hit.GetComponent<Enemy>();
-        GameObject enemyObject = GameObject.Find("Enemy");
-        EnemyAI_0 tmp = enemyObject.GetComponent<EnemyAI_0>();
+        EnemyAI_0 AI = null;
+
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
-            return;
-        }
+            AI = enemy.gameObject.GetComponent<EnemyAI_0>();
+            AI.Negative();
 
-        Player player = hit.GetComponent<Player>();
+            enemy.TakeDamage(damage);
+        }
+        Player player  = hit.GetComponent<Player>();
         if (player != null)
         {
             player.TakeDamage(damage);
             
-            tmp.Positive();
+            AI?.Positive();
         }
-        tmp.Negative();
 
         if(!hit.isTrigger)
             Destroy(gameObject);

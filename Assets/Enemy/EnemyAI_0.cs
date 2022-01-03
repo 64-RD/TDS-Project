@@ -1,15 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
-using Unity.VisualScripting;
-//using Unity.MLAgents.Actuators;
-
-using UnityEngine;
 
 /// <summary>
 /// A Enemy Machine Learning Agent
@@ -35,9 +26,7 @@ public class EnemyAI_0 :Agent
     private Rigidbody2D rigidbody;
 
     public Player player;
-    public GameObject playerObject;
     public Transform firePoint;
-    public GameObject bulletPrefab;
     private Enemy enemy;
     private Vector3  beginPosition;
     private Quaternion beginRotation;
