@@ -22,10 +22,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         ProcessInputs();
-        FOV.SetAimDirection(this.transform.up);
-        FOV.SetOrigin(transform.position);
-        FOV.SetViewDistance(FOV_distance);
-        FOV.SetFoV(FOV_angle);
+        //FOV.SetAimDirection(this.transform.up);
+        //FOV.SetOrigin(transform.position);
+        //FOV.SetViewDistance(FOV_distance);
+        //FOV.SetFoV(FOV_angle);
     }
 
     private void FixedUpdate()
