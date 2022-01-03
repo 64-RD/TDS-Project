@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int health;
+    public int maxHealth = 1000;
+    public int health = 1000;
     public HealthBar healthBar;
     public float moveSpeed;
     public Rigidbody2D rb;
@@ -19,27 +19,36 @@ public class Player : MonoBehaviour
     [SerializeField] public FieldOfView FOV;
     public float FOV_angle;
     public float FOV_distance;
-    
+    public bool isDie=false;
+    private Vector3 beginPosition;
 
     void Start()
     {
+        beginPosition = transform.position;
         health = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
     }
+
+
     // Update is called once per frame
     void Update()
     {
         ProcessInputs();
-        FOV.SetAimDirection(this.transform.up);
-        FOV.SetOrigin(transform.position);
-        FOV.SetViewDistance(FOV_distance);
-        FOV.SetFoV(FOV_angle);
+        if (FOV != null)
+        {
+            FOV.SetAimDirection(this.transform.up);
+            FOV.SetOrigin(transform.position);
+            FOV.SetViewDistance(FOV_distance);
+            FOV.SetFoV(FOV_angle);
+        }
     }
 
     private void FixedUpdate()
     {
         Move();
     }
+
+
 
     void ProcessInputs()
     {
@@ -82,6 +91,42 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDie = true;
+        //Destroy(gameObject);
+    }
+
+    public void respawn()
+    {
+        Vector3 potentialPosition;
+        isDie = false;
+        health = 1000;
+        while (true)
+        {
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
+            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.05f);
+
+            // Safe position has been found if no colliders are overlapped
+            if (colliders.Length == 0)
+                break;
+        }
+
+        transform.position = potentialPosition;
+
+
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       Color color =  collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+        color = new Color(color.r, color.g, color.b, 0.5f);
+
+        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+        color = new Color(color.r, color.g, color.b, 1f);
+
+        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
     }
 }
