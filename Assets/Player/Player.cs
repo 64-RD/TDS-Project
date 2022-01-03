@@ -119,14 +119,23 @@ public class Player : MonoBehaviour
     {
        Color color =  collision.gameObject.GetComponent<SpriteRenderer>().material.color;
         color = new Color(color.r, color.g, color.b, 0.5f);
-
-        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
+        Component[] bushlist;
+        bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer bush in bushlist)
+        {
+            bush.material.color = color;
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
         color = new Color(color.r, color.g, color.b, 1f);
 
-        collision.gameObject.GetComponent<SpriteRenderer>().material.color = color;
+        Component[] bushlist;
+        bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer bush in bushlist)
+        {
+            bush.material.color = color;
+        }
     }
 }
