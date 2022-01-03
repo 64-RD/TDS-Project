@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using Unity.VisualScripting;
 //using Unity.MLAgents.Actuators;
 
 using UnityEngine;
@@ -175,9 +176,7 @@ public class EnemyAI_0 :Agent
 
     private void Update()
     {
-        
         Debug.DrawLine(player.transform.position , transform.position, Color.green);
-
     }
 
     public void Positive()
@@ -188,11 +187,10 @@ public class EnemyAI_0 :Agent
     {
         AddReward(-.01f);
     }
-    private void OnCollisionEnter(Collision collision)
+    
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (trainingMode )
-        {
+        if(trainingMode)
             AddReward(-.1f);
-        }
     }
 }

@@ -19,7 +19,14 @@ public class Player : MonoBehaviour
     public float FOV_angle;
     public float FOV_distance;
     public bool isDie=false;
-    
+    private Vector3 beginPosition;
+
+    void Start()
+    {
+        beginPosition = transform.position;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -83,9 +90,22 @@ public class Player : MonoBehaviour
 
     public void respawn()
     {
+        Vector3 potentialPosition;
         isDie = false;
         health = 1000;
-        //transform.position = new Vector3(35.0f, 25.0f, 0.0f);
+        while (true)
+        {
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
+            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.05f);
+
+            // Safe position has been found if no colliders are overlapped
+            if (colliders.Length == 0)
+                break;
+        }
+
+        transform.position = potentialPosition;
+
+
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

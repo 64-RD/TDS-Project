@@ -1,0 +1,6 @@
+model_checkpoint_path: "Enemy-5000112.ckpt"
+all_model_checkpoint_paths: "Enemy-3499952.ckpt"
+all_model_checkpoint_paths: "Enemy-3999984.ckpt"
+all_model_checkpoint_paths: "Enemy-4499952.ckpt"
+all_model_checkpoint_paths: "Enemy-4999984.ckpt"
+all_model_checkpoint_paths: "Enemy-5000112.ckpt"
