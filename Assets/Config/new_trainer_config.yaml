@@ -14,7 +14,11 @@ behaviors:
     reward_signals:
       extrinsic:
         gamma: 0.99
-        strength: 1.0
+        strength: 0.5
+      gail:
+        gamma: 0.99
+        strength: 0.5
+        demo_path: ../demos/Demo07.demo
     keep_checkpoints: 5
     checkpoint_interval: 500000
     max_steps: 5000000

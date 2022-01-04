@@ -1,0 +1,2 @@
+model_checkpoint_path: "Enemy-80365.ckpt"
+all_model_checkpoint_paths: "Enemy-80365.ckpt"

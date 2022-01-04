@@ -1,0 +1,49 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1641247998",
+        "python_version": "3.7.11 (default, Jul 27 2021, 09:42:29) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "E:\\anakonda\\envs\\ml-agents-1.0.8\\Scripts\\mlagents-learn ./new_trainer_config.yaml --initialize-from enemy6 --run-id KM_07",
+        "mlagents_version": "0.20.0",
+        "mlagents_envs_version": "0.20.0",
+        "communication_protocol_version": "1.1.0",
+        "tensorflow_version": "2.7.0",
+        "numpy_version": "1.18.5",
+        "end_time_seconds": "1641248013"
+    },
+    "total": 15.2560946,
+    "count": 1,
+    "self": 0.2693260000000013,
+    "children": {
+        "run_training.setup": {
+            "total": 0.06820979999999999,
+            "count": 1,
+            "self": 0.06820979999999999
+        },
+        "TrainerController.start_learning": {
+            "total": 14.9185588,
+            "count": 1,
+            "self": 0.00028599999999734393,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 14.752004300000001,
+                    "count": 1,
+                    "self": 14.752004300000001
+                },
+                "TrainerController._save_models": {
+                    "total": 0.16626850000000104,
+                    "count": 1,
+                    "self": 1.8000000000739647e-05,
+                    "children": {
+                        "RLTrainer._checkpoint": {
+                            "total": 0.1662505000000003,
+                            "count": 1,
+                            "self": 0.1662505000000003
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

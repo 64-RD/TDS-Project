@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int maxHealth = 1000;
-    public int health = 1000;
+    public int maxHealth = 200;
+    public int health = 200;
     public HealthBar healthBar;
     public float moveSpeed;
     public Rigidbody2D rb;
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+       // Move();
     }
 
 
@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
     private void Die()
     {
         isDie = true;
+
         //Destroy(gameObject);
     }
 
@@ -99,11 +100,11 @@ public class Player : MonoBehaviour
     {
         Vector3 potentialPosition;
         isDie = false;
-        health = 1000;
+        health = 200;
         while (true)
         {
             potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
-            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.05f);
+            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.9f);
 
             // Safe position has been found if no colliders are overlapped
             if (colliders.Length == 0)
@@ -142,6 +143,17 @@ public class Player : MonoBehaviour
             {
                 bush.material.color = color;
             }
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+        color = new Color(color.r, color.g, color.b, 0.5f);
+        Component[] bushlist;
+        bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer bush in bushlist)
+        {
+            bush.material.color = color;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

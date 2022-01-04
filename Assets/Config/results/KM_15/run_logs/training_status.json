@@ -1,0 +1,23 @@
+{
+    "Enemy": {
+        "checkpoints": [
+            {
+                "steps": 80365,
+                "file_path": "results\\KM_15\\Enemy\\Enemy-80365.nn",
+                "reward": -49.50392679164284,
+                "creation_time": 1641294688.310708
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 80365,
+            "file_path": "results\\KM_15\\Enemy.nn",
+            "reward": -49.50392679164284,
+            "creation_time": 1641294688.310708
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.7.0"
+    }
+}
