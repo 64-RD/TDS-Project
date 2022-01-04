@@ -20,7 +20,7 @@ public class EnemyAI_0 :Agent
     public float moveSpeed = 5;
 
     [Tooltip("Rotation speed")]
-    public float rotationSpeed = 2f;
+    public float rotationSpeed = 90f;
 
 
     [Tooltip("The agent's camera")]
@@ -74,8 +74,9 @@ public class EnemyAI_0 :Agent
         // Don't take actions if frozen
         if (frozen) return;
 
-        // Calculate movement vector
-        Vector2 move = new Vector2(vectorAction[0], vectorAction[1]);
+        // Calculate movement vector mapowanie z 0,1,2 na -1,0,1
+        //float moveX = vectorAction[1] - 1;
+        //float moveY = vectorAction[0] - 1;
 
         // Add force in the direction of the move vector
         rigidbody.velocity = new Vector2(vectorAction[1] * moveSpeed, vectorAction[0] * moveSpeed);
@@ -85,12 +86,14 @@ public class EnemyAI_0 :Agent
 
 
         // Calculate smooth rotation changes
-        smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2], rotationSpeed * Time.fixedDeltaTime);
-
-        transform.rotation = Quaternion.Euler(0, 0, rotationVector.z + smoothRotation);
+        //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
+        //smoothRotation = (vectorAction[2] - 1) * rotationSpeed * Time.fixedDeltaTime;
+        transform.rotation = Quaternion.Euler(0, 0, (vectorAction[2]+1)*180);
 
         if(vectorAction[3]>0)
          enemy.Shoot();
+
+        AddReward(-1f / MaxStep);
         
     }
 
@@ -100,6 +103,7 @@ public class EnemyAI_0 :Agent
 
         // Observe the agent's local rotation (4 observations)
         sensor.AddObservation(transform.localRotation.normalized);
+        sensor.AddObservation(transform.position);//3 observations
 
         // Get a vector from the beak tip to the nearest flower
         Vector3 toPlayer = player.transform.position - transform.position;
@@ -139,15 +143,26 @@ public class EnemyAI_0 :Agent
         else if (Input.GetKey(KeyCode.D)) left = 1f;
 
 
-        if (Input.GetKey(KeyCode.Q))
-            shoot = 1.0f;
-        else
-            shoot = -1.0f;
+        if (Input.GetKey(KeyCode.Space))
+        {
+            shoot = 1f;
+        }
 
+        Vector3 _mousePos;
+        _mousePos = Input.mousePosition;
+        _mousePos.z = 5.23f;
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(this.transform.position);
+        _mousePos.x -= objectPos.x;
+        _mousePos.y -= objectPos.y;
 
-        // Turn left/right
-        if (Input.GetKey(KeyCode.LeftArrow)) yaw = -1f;
-        else if (Input.GetKey(KeyCode.RightArrow)) yaw = 1f;
+        float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
+        //Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
+        angle = angle - 90;
+        yaw = (angle / 180f) - 1f ;
+        /*// Turn left/right
+        if (Input.GetKey(KeyCode.LeftArrow)) yaw = 0f;
+        else if (Input.GetKey(KeyCode.RightArrow)) yaw = 2f;
+        else yaw = 1f;*/
 
         // Combine the movement vectors and normalize
         //Vector2 combined = (forward + left).normalized;
@@ -177,6 +192,17 @@ public class EnemyAI_0 :Agent
     private void Update()
     {
         Debug.DrawLine(player.transform.position , transform.position, Color.green);
+        Vector3 toPlayer = player.transform.position - transform.position;
+        //Debug.Log(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
+
+        if (player.isDie)
+            PlayerDie();
+    }
+
+    public void PlayerDie()
+    {
+        AddReward(1f);
+        EndEpisode();
     }
 
     public void Positive()
@@ -185,7 +211,7 @@ public class EnemyAI_0 :Agent
     }
     public void Negative()
     {
-        AddReward(-.01f);
+        AddReward(-.05f);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)

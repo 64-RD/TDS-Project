@@ -20,8 +20,12 @@ default:
     vis_encode_type: simple
     reward_signals:
         extrinsic:
-            strength: 1.0
+            strength: 0.5
             gamma: 0.99
+        gail:
+            strength: 0.5
+            gamma: 0.99
+            demo_path: ../demos/Demo07.demo
 
 Enemy:
     time_horizon: 128

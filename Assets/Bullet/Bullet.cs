@@ -33,6 +33,7 @@ public class Bullet : MonoBehaviour
             player.TakeDamage(damage);
             
             tmp.Positive();
+            Debug.Log(hit.isTrigger);
         }
         tmp.Negative();
 
