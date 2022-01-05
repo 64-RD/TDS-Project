@@ -28,8 +28,6 @@ public class EnemyAI_0 :Agent
     public Player player;
     public Transform firePoint;
     private Enemy enemy;
-    private Vector3  beginPosition;
-    private Quaternion beginRotation;
     private bool frozen = false;
 
     public override void Initialize()
@@ -39,8 +37,7 @@ public class EnemyAI_0 :Agent
   
         // If not training mode, no max step, play forever
         if (!trainingMode) MaxStep = 0;
-        beginPosition = transform.position;
-        beginRotation = transform.rotation;
+       
     }
 
     public override void OnEpisodeBegin()
@@ -48,14 +45,9 @@ public class EnemyAI_0 :Agent
         if (trainingMode)
         {
             player.respawn();
-            transform.rotation = beginRotation;
-            transform.position = beginPosition + new Vector3(UnityEngine.Random.Range(-5.0f,5.0f), UnityEngine.Random.Range(-5.0f, 5.0f), 0.0f);
+            enemy.respawn();
         }
 
-        
-       
-
-       
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -106,6 +98,8 @@ public class EnemyAI_0 :Agent
 
         sensor.AddObservation(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
 
+        sensor.AddObservation(player.health);
+        sensor.AddObservation(enemy.health);
 
 
         // 9 total observations
@@ -132,7 +126,7 @@ public class EnemyAI_0 :Agent
         else if (Input.GetKey(KeyCode.D)) left = 1f;
 
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             shoot = 1f;
         }
@@ -186,6 +180,9 @@ public class EnemyAI_0 :Agent
 
         if (player.isDie)
             PlayerDie();
+        if (enemy.isDie)
+            EnemyDie();
+
     }
 
     public void PlayerDie()
@@ -194,13 +191,22 @@ public class EnemyAI_0 :Agent
         EndEpisode();
     }
 
+    public void EnemyDie()
+    {
+        AddReward(-1f);
+        EndEpisode();
+    }
     public void Positive()
     {
         AddReward(.1f );
     }
+    public void GetHit()
+    {
+        AddReward(-.2f);
+    }
     public void Negative()
     {
-        AddReward(-.05f);
+        AddReward(-.01f);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)

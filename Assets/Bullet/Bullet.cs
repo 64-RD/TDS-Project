@@ -35,6 +35,7 @@ public class Bullet : MonoBehaviour
             AI.Negative();
 
             enemy.TakeDamage(damage);
+            tmp.GetHit();
         }
         Player player  = hit.GetComponent<Player>();
         if (player != null)

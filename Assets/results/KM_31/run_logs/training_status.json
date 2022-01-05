@@ -1,0 +1,35 @@
+{
+    "Enemy": {
+        "checkpoints": [
+            {
+                "steps": 499986,
+                "file_path": "results\\KM_31\\Enemy\\Enemy-499986.nn",
+                "reward": -3.8554221875965595,
+                "creation_time": 1641323955.8035533
+            },
+            {
+                "steps": 999936,
+                "file_path": "results\\KM_31\\Enemy\\Enemy-999936.nn",
+                "reward": -3.6957774505980554,
+                "creation_time": 1641327152.0820994
+            },
+            {
+                "steps": 1313744,
+                "file_path": "results\\KM_31\\Enemy\\Enemy-1313744.nn",
+                "reward": -4.275542199521897,
+                "creation_time": 1641329035.4649925
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1313744,
+            "file_path": "results\\KM_31\\Enemy.nn",
+            "reward": -4.275542199521897,
+            "creation_time": 1641329035.4649925
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.1.0",
+        "mlagents_version": "0.20.0",
+        "tensorflow_version": "2.7.0"
+    }
+}
