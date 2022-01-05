@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-       // Move();
+       //Move();
     }
 
 
@@ -131,20 +131,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (!collision.GetComponent<Bullet>())
-        {
-            Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
-            color = new Color(color.r, color.g, color.b, 0.5f);
-            Component[] bushlist;
-            bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer bush in bushlist)
-            {
-                bush.material.color = color;
-            }
-        }
-    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;

@@ -81,8 +81,8 @@ public class EnemyAI_0 :Agent
 
         if(vectorAction[3]>0)
          enemy.Shoot();
-
-        AddReward(-1f / MaxStep);
+        if(trainingMode)
+            AddReward(-1f / MaxStep);
         
     }
 
@@ -146,7 +146,7 @@ public class EnemyAI_0 :Agent
 
         float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
         //Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
-        angle = angle - 90;
+        //angle = angle - 90;
         yaw = (angle / 180f) - 1f ;
         /*// Turn left/right
         if (Input.GetKey(KeyCode.LeftArrow)) yaw = 0f;
