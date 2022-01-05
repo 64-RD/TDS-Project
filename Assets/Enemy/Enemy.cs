@@ -16,10 +16,16 @@ public class Enemy : MonoBehaviour
     private Vector3 thisPos;
     private float angle;
     public float currentTime=0;
+    public bool isDie = false;
+
+    private Vector3 beginPosition;
+    private Quaternion beginRotation;
 
     public void Start()
     {
         //player = GameObject.FindWithTag("Player");
+        beginPosition = transform.position;
+        beginRotation = transform.rotation;
     }
 
     public void Update()
@@ -45,6 +51,25 @@ public class Enemy : MonoBehaviour
         currentTime += 1 * Time.deltaTime;
     }
 
+    public void respawn()
+    {
+        Vector3 potentialPosition;
+        isDie = false;
+        health = 100;
+        while (true)
+        {
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
+            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.9f);
+
+            // Safe position has been found if no colliders are overlapped
+            if (colliders.Length == 0)
+                break;
+        }
+
+        transform.position = potentialPosition;
+
+
+    }
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -53,8 +78,9 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
-    }
+         isDie = true;
+    //Destroy(gameObject);
+}
 
     public void Shoot()
     {

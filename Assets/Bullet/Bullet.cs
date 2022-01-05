@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+            tmp.GetHit();
         }
         Player player  = hit.GetComponent<Player>();
         if (player != null)
@@ -35,7 +36,7 @@ public class Bullet : MonoBehaviour
             tmp.Positive();
             Debug.Log(hit.isTrigger);
         }
-        tmp.Negative();
+        //tmp.Negative();
 
         if(!hit.isTrigger)
             Destroy(gameObject);

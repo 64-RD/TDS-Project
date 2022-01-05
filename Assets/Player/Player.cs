@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public GameObject enemy;
+    public float waitTime;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
     [SerializeField] public FieldOfView FOV;
@@ -21,19 +24,29 @@ public class Player : MonoBehaviour
     public float FOV_distance;
     public bool isDie=false;
     private Vector3 beginPosition;
+    NavMeshAgent agent;
+
+    private Vector3 targetPos; //pozycja celu
+    private Vector3 thisPos;
+    private float angle;
+    public float currentTime = 0;
 
     void Start()
     {
         beginPosition = transform.position;
         health = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        ProcessInputs();
+        //ProcessInputs();
         if (FOV != null)
         {
             FOV.SetAimDirection(this.transform.up);
@@ -45,10 +58,35 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-       // Move();
+        // Move();
+        AI();
     }
 
 
+    void AI()
+    {
+        if (Vector3.Distance(transform.position, enemy.transform.position)>2f)
+            agent.SetDestination(enemy.transform.position);
+        else
+            agent.SetDestination(transform.position);
+        targetPos = enemy.transform.position;
+        thisPos = transform.position;
+        targetPos.x = targetPos.x - thisPos.x;
+        targetPos.y = targetPos.y - thisPos.y;
+        angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle -90));
+
+        if(currentTime>=waitTime)
+        {
+            Shoot();
+            currentTime = 0;
+        }
+        else
+        {
+            currentTime += 1 * Time.deltaTime;
+        }
+
+    }
 
     void ProcessInputs()
     {

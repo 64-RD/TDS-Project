@@ -8,8 +8,8 @@ behaviors:
       learning_rate_schedule: linear
     network_settings:
       normalize: false
-      hidden_units: 128
-      num_layers: 2
+      hidden_units: 256
+      num_layers: 3
       vis_encode_type: simple
     reward_signals:
       extrinsic:
@@ -18,7 +18,10 @@ behaviors:
       gail:
         gamma: 0.99
         strength: 0.5
-        demo_path: ../demos/Demo07.demo
+        demo_path: demos/Demo09.demo
+    behavioral_cloning:
+      strength: 0.5
+      demo_path: demos/Demo09.demo
     keep_checkpoints: 5
     checkpoint_interval: 500000
     max_steps: 5000000

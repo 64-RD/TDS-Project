@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1641320320",
+        "python_version": "3.7.11 (default, Jul 27 2021, 09:42:29) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "E:\\anakonda\\envs\\ml-agents-1.0.8\\Scripts\\mlagents-learn ./Config/new_trainer_config.yaml --run-id KM_30",
+        "mlagents_version": "0.20.0",
+        "mlagents_envs_version": "0.20.0",
+        "communication_protocol_version": "1.1.0",
+        "tensorflow_version": "2.7.0",
+        "numpy_version": "1.18.5",
+        "end_time_seconds": "1641320338"
+    },
+    "total": 18.297875599999998,
+    "count": 1,
+    "self": 0.32837949999999694,
+    "children": {
+        "run_training.setup": {
+            "total": 0.1712604000000013,
+            "count": 1,
+            "self": 0.1712604000000013
+        },
+        "TrainerController.start_learning": {
+            "total": 17.7982357,
+            "count": 1,
+            "self": 0.0006086999999936893,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 17.7973226,
+                    "count": 1,
+                    "self": 17.7973226
+                },
+                "trainer_threads": {
+                    "total": 2.1000000032245225e-06,
+                    "count": 1,
+                    "self": 2.1000000032245225e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 0.00030230000000130985,
+                    "count": 1,
+                    "self": 0.00030230000000130985
+                }
+            }
+        }
+    }
+}
