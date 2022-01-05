@@ -1,25 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.MLAgents;
 
 public class Enemy : MonoBehaviour
 {
 
-    protected float health = 100;
+    public int maxHealth = 100;
+    protected int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+    
     public float waitTime;
     protected float damageResist = 1.0f;
     protected float speed = 1.0f;
-    protected Weapon weapon;
-    public GameObject bulletPrefab;
-    public GameObject player; // gracz , z pocz�tku on jest celem
-    public Transform firePoint;
 
-  
+    public int totalDamage=0;
+
+    public Weapon weapon;
+    //public GameObject player; // gracz , z pocz�tku on jest celem
+
+    public float currentTime = 0;
+    public bool isDie = false;
+    public Agent agent;
+
     private Vector3 targetPos; //pozycja celu
     private Vector3 thisPos;
     private float angle;
-    public float currentTime=0;
-    public bool isDie = false;
 
     private Vector3 beginPosition;
     private Quaternion beginRotation;
@@ -30,11 +40,6 @@ public class Enemy : MonoBehaviour
         beginPosition = transform.position;
         beginRotation = transform.rotation;
     }
-    protected float health = 100f;
-    public Weapon weapon;
-    public GameObject player; // gracz, z początku on jest celem
-    protected float speed = 1.0f;
-    protected float damageResist = 1.0f;
 
     public void Update()
     {
@@ -53,9 +58,9 @@ public class Enemy : MonoBehaviour
         */
     }
 
-    public void Shoot()
+    public bool Shoot()
     {
-        weapon.TryShoot();
+        return weapon.TryShoot();
     }
 
     public void respawn()
@@ -79,7 +84,7 @@ public class Enemy : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        health -= (damage * damageResist);
+        health -= (int)(damage * damageResist);
         if (health <= 0) Die();
     }
 

@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 507766054432290365}
   - component: {fileID: 507766054432290354}
   - component: {fileID: 507766054432290366}
+  - component: {fileID: 9124276113257962413}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -142,7 +143,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -163,17 +164,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
-  health: 100
   healthBar: {fileID: 0}
+  trainigMode: 0
   moveSpeed: 5
   rb: {fileID: 507766054432290365}
   firePoint: {fileID: 507766053912566113}
-  bulletPrefab: {fileID: 7866719689290796183, guid: 5eb68595f1ae00449af3daaefd4575f6,
-    type: 3}
+  bulletPrefab: {fileID: 0}
+  waitTime: 0
   FOV: {fileID: 0}
   FOV_angle: 0
   FOV_distance: 0
   isDie: 0
+  currentTime: 0
 --- !u!58 &507766054432290366
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -190,3 +192,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.32
+--- !u!195 &9124276113257962413
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507766054432290355}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.32
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.64
+  m_BaseOffset: 0.32
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

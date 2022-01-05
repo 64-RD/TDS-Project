@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor2
-  m_DetectableTags: []
+  m_DetectableTags:
+  - Untagged
+  - Player
   m_RaysPerDirection: 5
   m_MaxRayDegrees: 180
   m_SphereCastRadius: 0.5
@@ -169,9 +171,6 @@ GameObject:
   - component: {fileID: 6237356842742253064}
   - component: {fileID: 6237356842742253067}
   - component: {fileID: 6237356842742253066}
-  - component: {fileID: 797042346378306912}
-  - component: {fileID: 8733758006362905517}
-  - component: {fileID: 4685843142048572125}
   m_Layer: 3
   m_Name: Commando
   m_TagString: Untagged
@@ -209,8 +208,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196e3279101fbf543a9436eeb2e08cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  waitTime: 0
+  totalDamage: 0
   weapon: {fileID: 6237356842227557891}
-  player: {fileID: 0}
+  currentTime: 0
+  isDie: 0
+  agent: {fileID: 0}
 --- !u!212 &6237356842742253064
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -276,8 +280,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 1
+  m_AngularDrag: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -300,66 +304,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.2, y: -0.1}
   m_Size: {x: 2.3, y: 1.5}
   m_Direction: 1
---- !u!114 &797042346378306912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6237356842742253069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BrainParameters:
-    VectorObservationSize: 12
-    NumStackedVectorObservations: 1
-    VectorActionSize: 04000000
-    VectorActionDescriptions: []
-    VectorActionSpaceType: 1
-  m_Model: {fileID: 5022602860645237092, guid: cab711d3f455b5340b69852ab82a4eb3, type: 3}
-  m_InferenceDevice: 1
-  m_BehaviorType: 0
-  m_BehaviorName: Enemy
-  TeamId: 0
-  m_UseChildSensors: 1
---- !u!114 &8733758006362905517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6237356842742253069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e862084ff28103c4abba0ec06068cb76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  moveSpeed: 5
-  rotationSpeed: 2
-  agentCamera: {fileID: 8021801009814137614}
-  trainingMode: 0
-  player: {fileID: 0}
-  firePoint: {fileID: 0}
---- !u!114 &4685843142048572125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6237356842742253069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 5
-  TakeActionsBetweenDecisions: 1
 --- !u!1 &6683917496529646644
 GameObject:
   m_ObjectHideFlags: 0

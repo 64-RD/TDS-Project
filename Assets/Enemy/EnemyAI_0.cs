@@ -26,6 +26,7 @@ public class EnemyAI_0 :Agent
     private Rigidbody2D rigidbody;
 
     public Player player;
+    public PlayerBehaviour playerBehaviour;
     public Transform firePoint;
     private Enemy enemy;
     private bool frozen = false;
@@ -44,7 +45,7 @@ public class EnemyAI_0 :Agent
     {
         if (trainingMode)
         {
-            player.respawn();
+            playerBehaviour.respawn();
             enemy.respawn();
         }
 
@@ -98,8 +99,8 @@ public class EnemyAI_0 :Agent
 
         sensor.AddObservation(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
 
-        sensor.AddObservation(player.health);
-        sensor.AddObservation(enemy.health);
+        sensor.AddObservation(player.Health);
+        sensor.AddObservation(enemy.Health);
 
 
         // 9 total observations

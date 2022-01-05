@@ -9,13 +9,20 @@ using UnityEngine.AI;
 public class Player : MonoBehaviour
 {
     public int maxHealth = 200;
-    public int health = 200;
+    protected int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
     public HealthBar healthBar;
+    public bool trainigMode;
     public float moveSpeed;
     public Rigidbody2D rb;
     public Transform firePoint;
-    public GameObject bulletPrefab;
-    public GameObject enemy;
+    public Bullet bulletPrefab;
+
     public float waitTime;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
@@ -23,22 +30,15 @@ public class Player : MonoBehaviour
     public float FOV_angle;
     public float FOV_distance;
     public bool isDie=false;
-    private Vector3 beginPosition;
-    NavMeshAgent agent;
-
-    private Vector3 targetPos; //pozycja celu
-    private Vector3 thisPos;
-    private float angle;
     public float currentTime = 0;
+
 
     void Start()
     {
-        beginPosition = transform.position;
         health = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        bulletPrefab.initBullet( 3.0f, 15);
+        
 
     }
 
@@ -46,7 +46,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ProcessInputs();
+        if(!trainigMode)
+            ProcessInputs();
         if (FOV != null)
         {
             FOV.SetAimDirection(this.transform.up);
@@ -58,36 +59,13 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Move();
-        AI();
-       //Move();
+        if (!trainigMode)
+            Move();
+      
     }
 
 
-    void AI()
-    {
-        if (Vector3.Distance(transform.position, enemy.transform.position)>2f)
-            agent.SetDestination(enemy.transform.position);
-        else
-            agent.SetDestination(transform.position);
-        targetPos = enemy.transform.position;
-        thisPos = transform.position;
-        targetPos.x = targetPos.x - thisPos.x;
-        targetPos.y = targetPos.y - thisPos.y;
-        angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle -90));
-
-        if(currentTime>=waitTime)
-        {
-            Shoot();
-            currentTime = 0;
-        }
-        else
-        {
-            currentTime += 1 * Time.deltaTime;
-        }
-
-    }
+    
 
     void ProcessInputs()
     {
@@ -113,9 +91,10 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
     }
 
-    void Shoot()
+    public void Shoot()
     {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet newBullet=Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        newBullet.owner = this.gameObject;
     }
 
     public void TakeDamage(int damage)
@@ -135,25 +114,6 @@ public class Player : MonoBehaviour
         //Destroy(gameObject);
     }
 
-    public void respawn()
-    {
-        Vector3 potentialPosition;
-        isDie = false;
-        health = 200;
-        while (true)
-        {
-            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
-            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.9f);
-
-            // Safe position has been found if no colliders are overlapped
-            if (colliders.Length == 0)
-                break;
-        }
-
-        transform.position = potentialPosition;
-
-
-    }
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -172,13 +132,16 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
-        color = new Color(color.r, color.g, color.b, 0.5f);
-        Component[] bushlist;
-        bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer bush in bushlist)
+        if (!collision.GetComponent<Bullet>())
         {
-            bush.material.color = color;
+            Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+            color = new Color(color.r, color.g, color.b, 0.5f);
+            Component[] bushlist;
+            bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer bush in bushlist)
+            {
+                bush.material.color = color;
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

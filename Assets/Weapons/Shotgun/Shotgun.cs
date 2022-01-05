@@ -9,7 +9,7 @@ public class Shotgun : Weapon
         rateOfFire = 1.0f;
         magazineSize = 3;
         reloadTime = 5.0f;
-        bullet.initBullet(1.5f, 20);
+        bullet.initBullet( 1.5f, 20);
     }
     protected override IEnumerator Shoot()
     {

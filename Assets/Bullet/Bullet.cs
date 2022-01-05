@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     private int damage = 25;
     public int constDamage = 25;
     public Rigidbody2D rb;
+    public GameObject owner;
 
     public void initBullet(float speed, int damage)
     {
@@ -27,22 +28,19 @@ public class Bullet : MonoBehaviour
     {
         int damage = constDamage + Random.Range(-10, 10);
         Enemy enemy = hit.GetComponent<Enemy>();
-        EnemyAI_0 AI = null;
-
         if (enemy != null)
         {
-            AI = enemy.gameObject.GetComponent<EnemyAI_0>();
-            AI.Negative();
-
             enemy.TakeDamage(damage);
-            tmp.GetHit();
         }
+
         Player player  = hit.GetComponent<Player>();
         if (player != null)
         {
             player.TakeDamage(damage);
-            
-            AI?.Positive();
+
+            enemy = owner.GetComponent<Enemy>();
+            if(enemy != null)
+                enemy.totalDamage += damage;
         }
 
         if(!hit.isTrigger)
