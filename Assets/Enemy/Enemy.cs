@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
         set { health = value; }
     }
     
-    public float waitTime;
+    //public float waitTime;
     protected float damageResist = 1.0f;
     protected float speed = 1.0f;
 
@@ -23,9 +23,9 @@ public class Enemy : MonoBehaviour
     public Weapon weapon;
     //public GameObject player; // gracz , z pocz�tku on jest celem
 
-    public float currentTime = 0;
+    private float currentTime = 0;
     public bool isDie = false;
-    public Agent agent;
+    //public Agent agent;
 
     private Vector3 targetPos; //pozycja celu
     private Vector3 thisPos;
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f), 0.0f);
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.0f);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.5f);
 
             // Safe position has been found if no colliders are overlapped
             if (colliders.Length == 0)

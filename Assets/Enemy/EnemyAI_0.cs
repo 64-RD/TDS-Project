@@ -26,7 +26,7 @@ public class EnemyAI_0 :Agent
     private Rigidbody2D rigidbody;
 
     public Player player;
-    public PlayerBehaviour playerBehaviour;
+    public PlayerBehaviour_1 playerBehaviour1;
     public Transform firePoint;
     private Enemy enemy;
     private bool frozen = false;
@@ -45,7 +45,7 @@ public class EnemyAI_0 :Agent
     {
         if (trainingMode)
         {
-            playerBehaviour.respawn();
+            playerBehaviour1.respawn();
             enemy.respawn();
         }
 

@@ -5,13 +5,13 @@ using Unity.MLAgents.Sensors;
 /// <summary>
 /// A Enemy Machine Learning Agent
 /// </summary>
-public class EnemyAI_1 :Agent
+public class EnemyAI_1 : Agent
 {
     [Tooltip("Moving speed")]
-    public float moveSpeed ;
+    public float moveSpeed;
 
     [Tooltip("Rotation speed")]
-    public float rotationSpeed ;
+    public float rotationSpeed;
 
 
 
@@ -24,12 +24,12 @@ public class EnemyAI_1 :Agent
     private Rigidbody2D rigidbody;
 
     public Player player;
-    public PlayerBehaviour playerBehaviour;
+    public PlayerBehaviour_1 playerBehaviour1;
     private Weapon weapon;
     private Enemy enemy;
     private bool frozen = false;
-    public int lastTotalDamage;
-    public int lastHealth;
+    private int lastTotalDamage;
+    private int lastHealth;
 
     public override void Initialize()
     {
@@ -40,17 +40,17 @@ public class EnemyAI_1 :Agent
         lastHealth = enemy.Health;
         // If not training mode, no max step, play forever
         if (!trainingMode) MaxStep = 0;
-       
+
     }
 
     public override void OnEpisodeBegin()
     {
         if (trainingMode)
         {
-            playerBehaviour.respawn();
+            playerBehaviour1.respawn();
             enemy.respawn();
             lastTotalDamage = enemy.totalDamage;
-
+            lastHealth = enemy.Health;
         }
 
     }
@@ -61,8 +61,8 @@ public class EnemyAI_1 :Agent
         if (frozen) return;
 
         // Calculate movement vector mapowanie z 0,1,2 na -1,0,1
-        float moveX=0f;
-        float moveY=0f;
+        float moveX = 0f;
+        float moveY = 0f;
         float rotation = 0f;
 
         switch (vectorAction[1])
@@ -97,7 +97,7 @@ public class EnemyAI_1 :Agent
 
         // Calculate smooth rotation changes
         //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
-        smoothRotation = rotation* rotationSpeed * Time.fixedDeltaTime;
+        smoothRotation = rotation * rotationSpeed * Time.fixedDeltaTime;
         transform.rotation = Quaternion.Euler(0, 0, rotationVector.z + smoothRotation);
 
         if (vectorAction[3] == 1)
@@ -105,42 +105,42 @@ public class EnemyAI_1 :Agent
                 AddReward(-0.01f);
 
 
-        if(trainingMode)
+        if (trainingMode)
             AddReward(-1f / MaxStep);
-        
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        
 
+        //Total 17 observations
         // Observe the agent's local rotation (4 observations)
         sensor.AddObservation(transform.localRotation.normalized);
-        sensor.AddObservation(transform.position);//3 observations
+
+        //3 observations
+        sensor.AddObservation(transform.position);
+        sensor.AddObservation(player.Health);
+        sensor.AddObservation(enemy.Health);
+        sensor.AddObservation(enemy.weapon.bulletsLeft);
+        sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(0.0f);
 
         // Get a vector from the beak tip to the nearest flower
-        Vector3 toPlayer = player.transform.position - transform.position;
-        sensor.AddObservation(toPlayer.normalized);
+        // Vector3 toPlayer = player.transform.position - transform.position;
+        //toPlayer = Vector3.zero;
 
-        float dist = Vector3.Distance(player.transform.position, transform.position);
-        sensor.AddObservation(dist);
+
+        //float dist = Vector3.Distance(player.transform.position, transform.position);
 
         // Observe a normalized vector pointing to the nearest flower (1 observations)
         //sensor.AddObservation(enemy.currentTime);
-
-        sensor.AddObservation(Vector3.Dot(weapon.transform.up.normalized, toPlayer.normalized));
-
-        sensor.AddObservation(player.Health);
-        sensor.AddObservation(enemy.Health);
-
-
-        // 9 total observations
     }
 
     public override void Heuristic(float[] actionsOut)
     {
         // Create placeholders for all movement/turning
-        float forward=1f;
+        float forward = 1f;
         float left = 1f;
         Vector3 up = Vector3.zero;
         float shoot = 0f;
@@ -210,7 +210,7 @@ public class EnemyAI_1 :Agent
 
     private void Update()
     {
-        Debug.DrawLine(player.transform.position , transform.position, Color.green);
+        Debug.DrawLine(player.transform.position, transform.position, Color.green);
         Vector3 toPlayer = player.transform.position - transform.position;
         //Debug.Log(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
 
@@ -226,12 +226,12 @@ public class EnemyAI_1 :Agent
 
         if (lastHealth != enemy.Health)
         {
-            GetHit();
+            Negative();
             lastHealth = enemy.Health;
         }
 
     }
-
+    #region rewards
     public void PlayerDie()
     {
         AddReward(1f);
@@ -245,17 +245,28 @@ public class EnemyAI_1 :Agent
     }
     public void Positive()
     {
-        AddReward(.1f );
+        AddReward(.2f);
     }
-    public void GetHit()
+    public void Negative()
     {
         AddReward(-.2f);
     }
-    
-    
+
+    #endregion
+
+
+    #region collisions
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(trainingMode)
+        if (trainingMode)
             AddReward(-.1f);
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (trainingMode)
+            AddReward(-.01f);
+    }
+    */
+    #endregion
 }
