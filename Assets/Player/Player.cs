@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public Transform firePoint;
     public Bullet bulletPrefab;
-
     public float waitTime;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
@@ -38,8 +37,6 @@ public class Player : MonoBehaviour
         health = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         bulletPrefab.initBullet( 3.0f, 15);
-        
-
     }
 
 
@@ -64,9 +61,6 @@ public class Player : MonoBehaviour
       
     }
 
-
-    
-
     void ProcessInputs()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -83,7 +77,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         rb.velocity = new Vector2(_moveDirection.x * moveSpeed, _moveDirection.y * moveSpeed);
-        Vector3 objectPos = Camera.main.WorldToScreenPoint (transform.position);
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
         _mousePos.x -= objectPos.x;
         _mousePos.y -= objectPos.y;
  
@@ -93,7 +87,7 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        Bullet newBullet=Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet newBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         newBullet.owner = this.gameObject;
     }
 
@@ -103,15 +97,14 @@ public class Player : MonoBehaviour
         health = health <= 0 ? 0 : health;
         healthBar.SetHealth(health);
 
-        if(health == 0)
+        if (health == 0)
             Die();
     }
 
     private void Die()
     {
         isDie = true;
-
-        //Destroy(gameObject);
+        // Destroy(gameObject);
     }
 
     
