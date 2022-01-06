@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     private Vector3 beginPosition;
     private Quaternion beginRotation;
 
-    public void Start()
+    void Awake()
     {
         //player = GameObject.FindWithTag("Player");
         beginPosition = transform.position;
@@ -67,11 +67,14 @@ public class Enemy : MonoBehaviour
     {
         Vector3 potentialPosition;
         isDie = false;
-        health = 100;
+        health = maxHealth;
+        totalDamage = 0;
+
+
         while (true)
         {
-            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), UnityEngine.Random.Range(-10.0f, 10.0f), 0.0f);
-            Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.9f);
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f), 0.0f);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.0f);
 
             // Safe position has been found if no colliders are overlapped
             if (colliders.Length == 0)
@@ -90,6 +93,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDie = true;
+        //Destroy(gameObject);
     }
 }

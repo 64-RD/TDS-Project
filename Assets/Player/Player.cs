@@ -22,14 +22,15 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public Transform firePoint;
     public Bullet bulletPrefab;
-    public float waitTime;
+
+    public float waitTime=1f;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
     [SerializeField] public FieldOfView FOV;
     public float FOV_angle;
     public float FOV_distance;
     public bool isDie=false;
-    public float currentTime = 0;
+    public float currentTime = 0f;
 
 
     void Start()
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentTime += Time.deltaTime;
         if(!trainigMode)
             ProcessInputs();
         if (FOV != null)
@@ -87,8 +89,13 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        Bullet newBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        newBullet.owner = this.gameObject;
+        Debug.LogWarning($"TIME:{currentTime}");
+        if (currentTime >= waitTime)
+        {
+            Bullet newBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            newBullet.owner = this.gameObject;
+            currentTime = 0f;
+        }
     }
 
     public void TakeDamage(int damage)
