@@ -5,13 +5,13 @@ using Unity.MLAgents.Sensors;
 /// <summary>
 /// A Enemy Machine Learning Agent
 /// </summary>
-public class EnemyAI_1 :Agent
+public class EnemyAI_2 : Agent
 {
     [Tooltip("Moving speed")]
-    public float moveSpeed ;
+    public float moveSpeed;
 
     [Tooltip("Rotation speed")]
-    public float rotationSpeed ;
+    public float rotationSpeed;
 
 
 
@@ -40,7 +40,7 @@ public class EnemyAI_1 :Agent
         lastHealth = enemy.Health;
         // If not training mode, no max step, play forever
         if (!trainingMode) MaxStep = 0;
-       
+
     }
 
     public override void OnEpisodeBegin()
@@ -61,8 +61,8 @@ public class EnemyAI_1 :Agent
         if (frozen) return;
 
         // Calculate movement vector mapowanie z 0,1,2 na -1,0,1
-        float moveX=0f;
-        float moveY=0f;
+        float moveX = 0f;
+        float moveY = 0f;
         float rotation = 0f;
 
         switch (vectorAction[1])
@@ -97,7 +97,7 @@ public class EnemyAI_1 :Agent
 
         // Calculate smooth rotation changes
         //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
-        smoothRotation = rotation* rotationSpeed * Time.fixedDeltaTime;
+        smoothRotation = rotation * rotationSpeed * Time.fixedDeltaTime;
         transform.rotation = Quaternion.Euler(0, 0, rotationVector.z + smoothRotation);
 
         if (vectorAction[3] == 1)
@@ -105,14 +105,14 @@ public class EnemyAI_1 :Agent
                 AddReward(-0.01f);
 
 
-        if(trainingMode)
+        if (trainingMode)
             AddReward(-1f / MaxStep);
-        
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        
+
 
         // Observe the agent's local rotation (4 observations)
         sensor.AddObservation(transform.localRotation.normalized);
@@ -140,7 +140,7 @@ public class EnemyAI_1 :Agent
     public override void Heuristic(float[] actionsOut)
     {
         // Create placeholders for all movement/turning
-        float forward=1f;
+        float forward = 1f;
         float left = 1f;
         Vector3 up = Vector3.zero;
         float shoot = 0f;
@@ -210,7 +210,7 @@ public class EnemyAI_1 :Agent
 
     private void Update()
     {
-        Debug.DrawLine(player.transform.position , transform.position, Color.green);
+        Debug.DrawLine(player.transform.position, transform.position, Color.green);
         Vector3 toPlayer = player.transform.position - transform.position;
         //Debug.Log(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
 
@@ -245,17 +245,17 @@ public class EnemyAI_1 :Agent
     }
     public void Positive()
     {
-        AddReward(.1f );
+        AddReward(.1f);
     }
     public void GetHit()
     {
         AddReward(-.2f);
     }
-    
-    
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(trainingMode)
+        if (trainingMode)
             AddReward(-.1f);
     }
 }

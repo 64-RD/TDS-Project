@@ -170,7 +170,7 @@ MonoBehaviour:
   rb: {fileID: 507766054432290365}
   firePoint: {fileID: 507766053912566113}
   bulletPrefab: {fileID: 0}
-  waitTime: 0
+  waitTime: 1
   FOV: {fileID: 0}
   FOV_angle: 0
   FOV_distance: 0

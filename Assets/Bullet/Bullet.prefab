@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2250255829486579039}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1590880423
-  m_SortingLayer: 4
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9927f10a2c840a54fbf0e9c49fc7bae1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,6 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a456f1b44a9e434b9a5715b402a8532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  damage: 25
+  constDamage: 25
   rb: {fileID: 9132093054914262385}
+  owner: {fileID: 0}
