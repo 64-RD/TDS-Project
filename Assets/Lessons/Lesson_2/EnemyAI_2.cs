@@ -24,12 +24,12 @@ public class EnemyAI_2 : Agent
     private Rigidbody2D rigidbody;
 
     public Player player;
-    public PlayerBehaviour playerBehaviour;
+    public PlayerBehaviour_1 playerBehaviour1;
     private Weapon weapon;
     private Enemy enemy;
     private bool frozen = false;
-    public int lastTotalDamage;
-    public int lastHealth;
+    private int lastTotalDamage;
+    private int lastHealth;
 
     public override void Initialize()
     {
@@ -47,10 +47,10 @@ public class EnemyAI_2 : Agent
     {
         if (trainingMode)
         {
-            playerBehaviour.respawn();
+            playerBehaviour1.respawn();
             enemy.respawn();
             lastTotalDamage = enemy.totalDamage;
-
+            lastHealth = enemy.Health;
         }
 
     }
@@ -113,28 +113,28 @@ public class EnemyAI_2 : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
 
-
+        //Total 17 observations
         // Observe the agent's local rotation (4 observations)
         sensor.AddObservation(transform.localRotation.normalized);
-        sensor.AddObservation(transform.position);//3 observations
+
+        //3 observations
+        sensor.AddObservation(transform.position);
+        sensor.AddObservation(player.Health);
+        sensor.AddObservation(enemy.Health);
+        sensor.AddObservation(enemy.weapon.bulletsLeft);
+        sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(0.0f);
 
         // Get a vector from the beak tip to the nearest flower
-        Vector3 toPlayer = player.transform.position - transform.position;
-        sensor.AddObservation(toPlayer.normalized);
+        // Vector3 toPlayer = player.transform.position - transform.position;
+        //toPlayer = Vector3.zero;
 
-        float dist = Vector3.Distance(player.transform.position, transform.position);
-        sensor.AddObservation(dist);
+
+        //float dist = Vector3.Distance(player.transform.position, transform.position);
 
         // Observe a normalized vector pointing to the nearest flower (1 observations)
         //sensor.AddObservation(enemy.currentTime);
-
-        sensor.AddObservation(Vector3.Dot(weapon.transform.up.normalized, toPlayer.normalized));
-
-        sensor.AddObservation(player.Health);
-        sensor.AddObservation(enemy.Health);
-
-
-        // 9 total observations
     }
 
     public override void Heuristic(float[] actionsOut)
@@ -226,12 +226,12 @@ public class EnemyAI_2 : Agent
 
         if (lastHealth != enemy.Health)
         {
-            GetHit();
+            Negative();
             lastHealth = enemy.Health;
         }
 
     }
-
+    #region rewards
     public void PlayerDie()
     {
         AddReward(1f);
@@ -245,17 +245,28 @@ public class EnemyAI_2 : Agent
     }
     public void Positive()
     {
-        AddReward(.1f);
+        AddReward(.2f);
     }
-    public void GetHit()
+    public void Negative()
     {
         AddReward(-.2f);
     }
 
+    #endregion
 
+
+    #region collisions
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (trainingMode)
             AddReward(-.1f);
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (trainingMode)
+            AddReward(-.01f);
+    }
+    */
+    #endregion
 }

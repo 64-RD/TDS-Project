@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public float FOV_angle;
     public float FOV_distance;
     public bool isDie=false;
-    public float currentTime = 0f;
+    private float currentTime = 0f;
 
 
     void Start()

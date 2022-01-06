@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     protected int magazineSize;
     protected float reloadTime;
     public Bullet bullet;
-    protected int bulletsLeft;
+    public int bulletsLeft;
     protected bool allowFire;
     private bool isInit = false;
     protected GameObject owner;

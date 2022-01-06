@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 7760913572536863359}
   - component: {fileID: 7760913572536863358}
   - component: {fileID: 7760913572536863345}
+  - component: {fileID: 4288397173293739197}
   - component: {fileID: 7760913572536863347}
   - component: {fileID: 7760913572536863344}
   m_Layer: 0
@@ -70,14 +71,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7760913572536863346}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -29.95, y: 3.39, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 7760913572141889178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &7760913572536863359
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -165,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1000
   healthBar: {fileID: 0}
-  trainigMode: 0
+  trainigMode: 1
   moveSpeed: 5
   rb: {fileID: 7760913572536863358}
   firePoint: {fileID: 7760913572141889178}
@@ -177,6 +178,20 @@ MonoBehaviour:
   FOV_distance: 0
   isDie: 0
   currentTime: 0
+--- !u!114 &4288397173293739197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760913572536863346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 527e7ecb32077b64fb2932f62f3ac473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+  player: {fileID: 0}
 --- !u!195 &7760913572536863347
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -2,10 +2,11 @@ behaviors:
   Enemy1:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 2048
-      buffer_size: 20480
+      batch_size: 512
+      buffer_size: 8000
       learning_rate: 0.0003
       learning_rate_schedule: linear
+      num_epoch: 8
     network_settings:
       normalize: false
       hidden_units: 256
