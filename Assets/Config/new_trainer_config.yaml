@@ -1,0 +1,31 @@
+behaviors:
+  Enemy:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 2048
+      buffer_size: 20480
+      learning_rate: 0.0003
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 256
+      num_layers: 3
+      vis_encode_type: simple
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 0.5
+      gail:
+        gamma: 0.99
+        strength: 0.5
+        demo_path: demos/Demo09.demo
+    behavioral_cloning:
+      strength: 0.5
+      demo_path: demos/Demo09.demo
+    keep_checkpoints: 5
+    checkpoint_interval: 500000
+    max_steps: 5000000
+    time_horizon: 128
+    summary_freq: 10000
+    threaded: true
+    framework: tensorflow

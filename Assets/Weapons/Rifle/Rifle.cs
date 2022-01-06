@@ -9,6 +9,6 @@ public class Rifle : Weapon
         rateOfFire = 5.0f;
         magazineSize = 30;
         reloadTime = 2.0f;
-        bullet.initBullet(1.0f, 25);
+        bullet.initBullet( 1.0f, 25);
     }
 }

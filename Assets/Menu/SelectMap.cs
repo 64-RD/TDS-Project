@@ -10,16 +10,16 @@ public class SelectMap : MonoBehaviour
     public void Map1()
     {
         Debug.Log("Map1 Selected");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Level1");
     }
     public void Map2()
     {
         Debug.Log("Map2 Selected");
-        //TODO
+        SceneManager.LoadScene("Level2");
     }
     public void Map3()
     {
         Debug.Log("Map3 Selected");
-        //TODO
+        SceneManager.LoadScene("LEVEL3");
     }
 }

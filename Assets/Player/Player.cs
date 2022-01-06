@@ -1,37 +1,71 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
+    public int maxHealth = 200;
+    protected int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
 
-    public int health = 100;
+    public HealthBar healthBar;
+    public bool trainigMode;
     public float moveSpeed;
     public Rigidbody2D rb;
     public Transform firePoint;
-    public GameObject bulletPrefab;
+    public Bullet bulletPrefab;
+
+    public float waitTime;
     private Vector2 _moveDirection;
     private Vector3 _mousePos;
     [SerializeField] public FieldOfView FOV;
     public float FOV_angle;
     public float FOV_distance;
-    
+    public bool isDie=false;
+    public float currentTime = 0;
+
+
+    void Start()
+    {
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        bulletPrefab.initBullet( 3.0f, 15);
+        
+
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        ProcessInputs();
-        //FOV.SetAimDirection(this.transform.up);
-        //FOV.SetOrigin(transform.position);
-        //FOV.SetViewDistance(FOV_distance);
-        //FOV.SetFoV(FOV_angle);
+        if(!trainigMode)
+            ProcessInputs();
+        if (FOV != null)
+        {
+            FOV.SetAimDirection(this.transform.up);
+            FOV.SetOrigin(transform.position);
+            FOV.SetViewDistance(FOV_distance);
+            FOV.SetFoV(FOV_angle);
+        }
     }
 
     private void FixedUpdate()
     {
-        Move();
+        if (!trainigMode)
+            Move();
+      
     }
+
+
+    
 
     void ProcessInputs()
     {
@@ -54,22 +88,75 @@ public class Player : MonoBehaviour
         _mousePos.y -= objectPos.y;
  
         float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    void Shoot()
+    public void Shoot()
     {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet newBullet=Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        newBullet.owner = this.gameObject;
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health <= 0) Die();
+        health = health <= 0 ? 0 : health;
+        healthBar.SetHealth(health);
+
+        if(health == 0)
+            Die();
     }
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDie = true;
+
+        //Destroy(gameObject);
+    }
+
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(!collision.GetComponent<Bullet>())
+        {
+            Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+            color = new Color(color.r, color.g, color.b, 0.5f);
+            Component[] bushlist;
+            bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer bush in bushlist)
+            {
+                bush.material.color = color;
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!collision.GetComponent<Bullet>())
+        {
+            Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+            color = new Color(color.r, color.g, color.b, 0.5f);
+            Component[] bushlist;
+            bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer bush in bushlist)
+            {
+                bush.material.color = color;
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.GetComponent<Bullet>())
+        {
+            Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
+            color = new Color(color.r, color.g, color.b, 1f);
+
+            Component[] bushlist;
+            bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer bush in bushlist)
+            {
+                bush.material.color = color;
+            }
+        }
     }
 }

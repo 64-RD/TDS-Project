@@ -9,13 +9,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BOT
   - Water
   - UI
-  - NotTransparent
-  - Mask
-  - Player
-  - Black
+  - Map
+  - Bushes
   - 
   - 
   - 
@@ -29,6 +27,9 @@ TagManager:
   - 
   - 
   - 
+  - Layer 1
+  - Layer 2
+  - Layer 3
   - 
   - 
   - 
@@ -47,4 +48,31 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1935072229
+    locked: 0
+  - name: non-colison
+    uniqueID: 2021031807
+    locked: 0
+  - name: prefabs
+    uniqueID: 2241093035
+    locked: 0
+  - name: bushes
+    uniqueID: 602771601
+    locked: 0
+  - name: colision
+    uniqueID: 3973008203
+    locked: 0
+  - name: Layer 1
+    uniqueID: 2425651459
+    locked: 0
+  - name: Layer 2
+    uniqueID: 4250941897
+    locked: 0
+  - name: Layer 3
+    uniqueID: 4189426099
+    locked: 0
+  - name: LayerPlayer
+    uniqueID: 2704086873
+    locked: 0
+  - name: Bushes
+    uniqueID: 113792201
     locked: 0
