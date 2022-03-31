@@ -47,8 +47,8 @@ public class EnemyAI_2 : Agent
     {
         if (trainingMode)
         {
-            playerBehaviour1.respawn();
             enemy.respawn();
+            playerBehaviour1.respawn();
             lastTotalDamage = enemy.totalDamage;
             lastHealth = enemy.Health;
         }
@@ -89,7 +89,7 @@ public class EnemyAI_2 : Agent
 
         // Add force in the direction of the move vector
         Vector2 direction = new Vector2(moveX, moveY).normalized;
-        rigidbody.velocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed);
+        //rigidbody.velocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed);
 
         // Get the current rotation
         Vector3 rotationVector = transform.rotation.eulerAngles;
@@ -98,15 +98,15 @@ public class EnemyAI_2 : Agent
         // Calculate smooth rotation changes
         //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
         smoothRotation = rotation * rotationSpeed * Time.fixedDeltaTime;
-        transform.rotation = Quaternion.Euler(0, 0, rotationVector.z + smoothRotation);
+        //transform.rotation = Quaternion.Euler(0, 0, rotationVector.z + smoothRotation);
 
-        if (vectorAction[3] == 1)
-            if (enemy.Shoot())
-                AddReward(-0.01f);
+        //if (vectorAction[3] == 1)
+        //if (enemy.Shoot())
+        //AddReward(-0.01f);
 
 
-        if (trainingMode)
-            AddReward(-1f / MaxStep);
+        //if (trainingMode)
+        //AddReward(-1f / MaxStep);
 
     }
 
@@ -119,15 +119,17 @@ public class EnemyAI_2 : Agent
 
         //3 observations
         sensor.AddObservation(transform.position);
-        sensor.AddObservation(player.Health);
-        sensor.AddObservation(enemy.Health);
-        sensor.AddObservation(enemy.weapon.bulletsLeft);
-        sensor.AddObservation(Vector3.zero);
-        sensor.AddObservation(Vector3.zero);
-        sensor.AddObservation(0.0f);
+        //sensor.AddObservation(player.Health);
+        //sensor.AddObservation(enemy.Health);
+        //sensor.AddObservation(enemy.weapon.bulletsLeft);
+        //sensor.AddObservation(Vector3.zero);
+        //sensor.AddObservation(Vector3.zero);
+        //sensor.AddObservation(0.0f);
 
         // Get a vector from the beak tip to the nearest flower
         // Vector3 toPlayer = player.transform.position - transform.position;
+        //sensor.AddObservation(toPlayer);
+
         //toPlayer = Vector3.zero;
 
 
@@ -213,23 +215,34 @@ public class EnemyAI_2 : Agent
         Debug.DrawLine(player.transform.position, transform.position, Color.green);
         Vector3 toPlayer = player.transform.position - transform.position;
         //Debug.Log(Vector3.Dot(firePoint.up.normalized, toPlayer.normalized));
-
-        if (player.isDie)
-            PlayerDie();
-        if (enemy.isDie)
-            EnemyDie();
-        if (lastTotalDamage != enemy.totalDamage)
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+        AddReward(-1 / MaxStep);
+        if (distance <= 3.0f)
         {
-            Positive();
-            lastTotalDamage = enemy.totalDamage;
+            AddReward(1.0f);
+            EndEpisode();
         }
-
-        if (lastHealth != enemy.Health)
+        if (distance >= 40.0f)
         {
-            Negative();
-            lastHealth = enemy.Health;
+            AddReward(-1.0f);
+            EndEpisode();
         }
+        /*   if (player.isDie)
+               PlayerDie();
+           if (enemy.isDie)
+               EnemyDie();
+           if (lastTotalDamage != enemy.totalDamage)
+           {
+               Positive();
+               lastTotalDamage = enemy.totalDamage;
+           }
 
+           if (lastHealth != enemy.Health)
+           {
+               Negative();
+               lastHealth = enemy.Health;
+           }
+        */
     }
     #region rewards
     public void PlayerDie()
@@ -256,17 +269,18 @@ public class EnemyAI_2 : Agent
 
 
     #region collisions
-    /*
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (trainingMode)
-            AddReward(-.1f);
-    }
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (trainingMode)
-            AddReward(-.01f);
-    }
-    */
+
+    /* private void OnCollisionEnter2D(Collision2D collision)
+     {
+         if (trainingMode)
+             AddReward(-.1f);
+     }
+
+     private void OnCollisionStay2D(Collision2D collision)
+     {
+         if (trainingMode)
+             AddReward(-.01f);
+     }
+     */
     #endregion
 }

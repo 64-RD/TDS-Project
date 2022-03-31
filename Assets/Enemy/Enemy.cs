@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     private Vector3 targetPos; //pozycja celu
     private Vector3 thisPos;
     private float angle;
+    private float defaultDistance = 5f;
 
     private Vector3 beginPosition;
     private Quaternion beginRotation;
@@ -70,11 +71,11 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         totalDamage = 0;
 
-
+        float distance = 5.0f;//Academy.Instance.EnvironmentParameters.GetWithDefault("distanceToAgent", defaultDistance);
         while (true)
         {
-            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f), 0.0f);
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.5f);
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance), 0.0f);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 1.5f);
 
             // Safe position has been found if no colliders are overlapped
             if (colliders.Length == 0)

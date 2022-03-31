@@ -8,7 +8,7 @@ using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
-    public int maxHealth = 200;
+    public int maxHealth = 100;
     protected int health;
     public int Health
     {
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        Debug.LogWarning($"TIME:{currentTime}");
+        //Debug.LogWarning($"TIME:{currentTime}");
         if (currentTime >= waitTime)
         {
             Bullet newBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
