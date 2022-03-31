@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f174556abfb92be4ea6bf5b7e16c79a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 100
   healthBar: {fileID: 0}
   trainigMode: 1
   moveSpeed: 5
@@ -177,7 +177,6 @@ MonoBehaviour:
   FOV_angle: 0
   FOV_distance: 0
   isDie: 0
-  currentTime: 0
 --- !u!114 &4288397173293739197
 MonoBehaviour:
   m_ObjectHideFlags: 0

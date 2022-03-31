@@ -73,14 +73,14 @@ public class Enemy : MonoBehaviour
 
         while (true)
         {
-            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f), 0.0f);
+            potentialPosition = beginPosition + new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), UnityEngine.Random.Range(-3.0f, 3.0f), 0.0f);
             Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.5f);
 
             // Safe position has been found if no colliders are overlapped
             if (colliders.Length == 0)
                 break;
         }
-
+        transform.rotation = beginRotation;
         transform.position = potentialPosition;
 
 

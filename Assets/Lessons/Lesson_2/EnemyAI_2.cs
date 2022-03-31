@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using System;
+using System.IO;
 
 /// <summary>
 /// A Enemy Machine Learning Agent
@@ -59,6 +61,17 @@ public class EnemyAI_2 : Agent
     {
         // Don't take actions if frozen
         if (frozen) return;
+
+        using (StreamWriter outputFile = new StreamWriter("E:/REPOS/Demo1.txt", true))
+        {
+            var obs = GetObservations();
+            foreach (float o in obs)
+                outputFile.Write(o.ToString() + ";");
+            outputFile.Write("\n");
+            var actions = GetAction();
+            foreach (float a in actions)
+                outputFile.Write(a.ToString()+";");
+        }
 
         // Calculate movement vector mapowanie z 0,1,2 na -1,0,1
         float moveX = 0f;
@@ -240,7 +253,7 @@ public class EnemyAI_2 : Agent
 
     public void EnemyDie()
     {
-        AddReward(-1f);
+        //AddReward(-1f);
         EndEpisode();
     }
     public void Positive()
@@ -249,19 +262,20 @@ public class EnemyAI_2 : Agent
     }
     public void Negative()
     {
-        AddReward(-.2f);
+        AddReward(-.05f);
     }
 
     #endregion
 
 
     #region collisions
-    /*
-    private void OnCollisionEnter2D(Collision2D collision)
+    
+   /* private void OnCollisionEnter2D(Collision2D collision)
     {
         if (trainingMode)
             AddReward(-.1f);
     }
+    /*
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (trainingMode)

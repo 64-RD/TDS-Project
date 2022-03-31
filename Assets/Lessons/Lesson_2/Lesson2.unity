@@ -1050,7 +1050,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -1275,7 +1275,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -2517,7 +2517,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -2867,7 +2867,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -5100,7 +5100,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -5396,7 +5396,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -7841,7 +7841,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -9687,7 +9687,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -10296,7 +10296,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -12521,7 +12521,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -16629,7 +16629,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -17387,7 +17387,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -17775,7 +17775,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -19510,7 +19510,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -21385,7 +21385,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1
@@ -21972,7 +21972,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 5000
   moveSpeed: 5
   rotationSpeed: 90
   trainingMode: 1

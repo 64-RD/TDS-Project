@@ -29,8 +29,8 @@ public class PlayerBehaviour_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GoToRandomPosition();
-        //ShootAtEnemy();   //Odkomentuj je¿eli gracz ma strzelaæ w bota
+       // GoToRandomPosition();
+        ShootAtEnemy();   //Odkomentuj je¿eli gracz ma strzelaæ w bota
 
     }
 
@@ -41,9 +41,9 @@ public class PlayerBehaviour_1 : MonoBehaviour
             while (true)
             {
 
-                targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f));
+                targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
                 Collider2D[] colliders2 = Physics2D.OverlapCircleAll(new Vector2(targetPosition.x, targetPosition.y), 0f);
-                if (Vector2.Distance(transform.position, targetPosition) > 5 && colliders2.Length == 0) 
+                if (Vector2.Distance(transform.position, targetPosition) > 2 && colliders2.Length == 0) 
                 {
 
                     agent.SetDestination(targetPosition);
@@ -59,7 +59,8 @@ public class PlayerBehaviour_1 : MonoBehaviour
     {
         if (enemy != null)
         {
-            player.Shoot();
+           // if(!player.isDie)
+              //  player.Shoot();
         }
         targetPos = enemy.transform.position;
         thisPos = transform.position;
@@ -74,15 +75,15 @@ public class PlayerBehaviour_1 : MonoBehaviour
         player.isDie = false;
         player.Health = player.maxHealth;
         player.healthBar.SetHealth(player.maxHealth);
-        while (true)
+        /*while (true)
         {
-            potentialPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f));
-            targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), UnityEngine.Random.Range(-8.0f, 8.0f));
+            potentialPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
+            targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
             Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.5f);
             Collider2D[] colliders2 = Physics2D.OverlapCircleAll(new Vector2(targetPosition.x,targetPosition.y), 0.5f);
 
-            // Safe position has been found if no colliders are overlapped*/
-            if (Vector3.Distance(potentialPosition, targetPosition) > 5 && colliders2.Length == 0 && colliders.Length == 0)
+            // Safe position has been found if no colliders are overlapped
+            if (Vector3.Distance(potentialPosition, targetPosition) > 2 && colliders2.Length == 0 && colliders.Length == 0)
             {
 
                 agent.SetDestination(targetPosition); 
@@ -91,8 +92,15 @@ public class PlayerBehaviour_1 : MonoBehaviour
                 
         }
 
-        transform.position = potentialPosition;
+        transform.position = potentialPosition;*/
+
+      var  positions = new (int X, int Y)[] { (-12, 5), (12, -5), (-12,-12), (-5, -12), (5, -12), (12, -12), (12, -5), (12, 5)};
+
+        int number = Random.Range(0, 7);
+        transform.position = new Vector3(positions[number].X + beginPosition.x, positions[number].Y + beginPosition.y, 0);
     }
+
+
 
 
 }

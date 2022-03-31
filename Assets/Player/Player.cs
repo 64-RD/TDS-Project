@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         _mousePos.z = 5.23f;
         if (Input.GetButtonDown("Fire1"))
         {
-            Shoot();
+            //Shoot();
         }
     }
 
@@ -82,21 +82,12 @@ public class Player : MonoBehaviour
         Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
         _mousePos.x -= objectPos.x;
         _mousePos.y -= objectPos.y;
- 
+
         float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    public void Shoot()
-    {
-        Debug.LogWarning($"TIME:{currentTime}");
-        if (currentTime >= waitTime)
-        {
-            Bullet newBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            newBullet.owner = this.gameObject;
-            currentTime = 0f;
-        }
-    }
+    
 
     public void TakeDamage(int damage)
     {
@@ -120,7 +111,7 @@ public class Player : MonoBehaviour
         if(!collision.GetComponent<Bullet>())
         {
             Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
-            color = new Color(color.r, color.g, color.b, 0.5f);
+            color = new Color(color.r, color.g, color.b, 0.3f);
             Component[] bushlist;
             bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer bush in bushlist)
@@ -135,7 +126,7 @@ public class Player : MonoBehaviour
         if (!collision.GetComponent<Bullet>())
         {
             Color color = collision.gameObject.GetComponent<SpriteRenderer>().material.color;
-            color = new Color(color.r, color.g, color.b, 0.5f);
+            color = new Color(color.r, color.g, color.b, 0.3f);
             Component[] bushlist;
             bushlist = collision.transform.parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer bush in bushlist)
