@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Unity.MLAgents;
 
 public class PlayerBehaviour_1 : MonoBehaviour
 {
@@ -30,7 +29,7 @@ public class PlayerBehaviour_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GoToRandomPosition();
+       // GoToRandomPosition();
         ShootAtEnemy();   //Odkomentuj je¿eli gracz ma strzelaæ w bota
 
     }
@@ -39,18 +38,19 @@ public class PlayerBehaviour_1 : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, targetPosition) < 0.5f)
         {
-          //  while (true)
-            //{
+            while (true)
+            {
 
-                targetPosition = enemy.transform.position;
-                //if (Vector2.Distance(transform.position, targetPosition) > 5) 
-                //{
+                targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
+                Collider2D[] colliders2 = Physics2D.OverlapCircleAll(new Vector2(targetPosition.x, targetPosition.y), 0f);
+                if (Vector2.Distance(transform.position, targetPosition) > 2 && colliders2.Length == 0) 
+                {
 
                     agent.SetDestination(targetPosition);
-                 //   break;
-                //}
+                    break;
+                }
 
-            //}
+            }
 
         }
     }
@@ -59,7 +59,8 @@ public class PlayerBehaviour_1 : MonoBehaviour
     {
         if (enemy != null)
         {
-           // player.Shoot();
+           // if(!player.isDie)
+              //  player.Shoot();
         }
         targetPos = enemy.transform.position;
         thisPos = transform.position;
@@ -74,26 +75,32 @@ public class PlayerBehaviour_1 : MonoBehaviour
         player.isDie = false;
         player.Health = player.maxHealth;
         player.healthBar.SetHealth(player.maxHealth);
-        float distance = 5.0f;//Academy.Instance.EnvironmentParameters.GetWithDefault("distanceToAgent", 5f);
-        while (true)
+        /*while (true)
         {
-            potentialPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
-            targetPosition = enemy.transform.localPosition;
+            potentialPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
+            targetPosition = beginPosition + new Vector2(UnityEngine.Random.Range(-5.0f, 5.0f), UnityEngine.Random.Range(-5.0f, 5.0f));
             Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(potentialPosition.x,potentialPosition.y), 0.5f);
-            //Collider2D[] colliders2 = Physics2D.OverlapCircleAll(new Vector2(targetPosition.x,targetPosition.y), 0.5f);
+            Collider2D[] colliders2 = Physics2D.OverlapCircleAll(new Vector2(targetPosition.x,targetPosition.y), 0.5f);
 
-            // Safe position has been found if no colliders are overlapped*/
-            if (Vector3.Distance(potentialPosition, targetPosition) > 5  && colliders.Length == 0)
+            // Safe position has been found if no colliders are overlapped
+            if (Vector3.Distance(potentialPosition, targetPosition) > 2 && colliders2.Length == 0 && colliders.Length == 0)
             {
-                Debug.LogWarning(targetPosition);
+
                 agent.SetDestination(targetPosition); 
                 break;
             }
                 
         }
 
-        transform.position = potentialPosition;
+        transform.position = potentialPosition;*/
+
+      var  positions = new (int X, int Y)[] { (-12, 5), (12, -5), (-12,-12), (-5, -12), (5, -12), (12, -12), (12, -5), (12, 5)};
+
+        int number = Random.Range(0, 7);
+        transform.position = new Vector3(positions[number].X + beginPosition.x, positions[number].Y + beginPosition.y, 0);
     }
+
+
 
 
 }

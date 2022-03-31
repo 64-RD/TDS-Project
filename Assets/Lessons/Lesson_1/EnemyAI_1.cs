@@ -1,6 +1,13 @@
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using System;
+using System.Linq;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Barracuda;
+using TMPro;
 
 /// <summary>
 /// A Enemy Machine Learning Agent
@@ -17,6 +24,8 @@ public class EnemyAI_1 : Agent
 
     [Tooltip("Whether this is training mode or gameplay mode")]
     public bool trainingMode;
+    public bool record=false;
+    public bool extModel = false;
 
     private float smoothRotation = 0f;
 
@@ -28,11 +37,39 @@ public class EnemyAI_1 : Agent
     private Weapon weapon;
     private Enemy enemy;
     private bool frozen = false;
+   
     private int lastTotalDamage;
     private int lastHealth;
 
+    private Vector2 _moveDirection;
+    private Vector3 _mousePos;
+
+    public NNModel model;
+    private Model runtimeModel;
+    private IWorker worker;
+    private string output1;
+    private string output2;
+    private string output3;
+    private string output4;
+    private string output5;
+    IList<float[]> input2D = new List<float[]>();
+
+
     public override void Initialize()
     {
+        float[] tmp = new float[737];
+        for (int i = 0; i < 10; i++)
+            input2D.Add(tmp);
+            
+
+        runtimeModel = ModelLoader.Load(model);
+        worker = WorkerFactory.CreateWorker(WorkerFactory.Type.Auto, runtimeModel);
+        output5 = runtimeModel.outputs[runtimeModel.outputs.Count - 1];
+        output4 = runtimeModel.outputs[runtimeModel.outputs.Count - 2];
+        output3 = runtimeModel.outputs[runtimeModel.outputs.Count - 3];
+        output2 = runtimeModel.outputs[runtimeModel.outputs.Count - 4];
+        output1 = runtimeModel.outputs[runtimeModel.outputs.Count - 5];
+
         rigidbody = GetComponent<Rigidbody2D>();
         enemy = GetComponent<Enemy>();
         weapon = enemy.weapon;
@@ -41,24 +78,37 @@ public class EnemyAI_1 : Agent
         // If not training mode, no max step, play forever
         if (!trainingMode) MaxStep = 0;
 
+        //Prediction.loadModel();
+
+
     }
 
     public override void OnEpisodeBegin()
     {
         if (trainingMode)
         {
+            
             playerBehaviour1.respawn();
             enemy.respawn();
             lastTotalDamage = enemy.totalDamage;
             lastHealth = enemy.Health;
         }
+        //if (record) save_data();
 
     }
+
+   
 
     public override void OnActionReceived(float[] vectorAction)
     {
         // Don't take actions if frozen
         if (frozen) return;
+
+        if (record)
+        {
+            
+        }
+
 
         // Calculate movement vector mapowanie z 0,1,2 na -1,0,1
         float moveX = 0f;
@@ -119,79 +169,137 @@ public class EnemyAI_1 : Agent
 
         //3 observations
         sensor.AddObservation(transform.position);
-        //sensor.AddObservation(player.Health);
-        //sensor.AddObservation(enemy.Health);
-        //sensor.AddObservation(enemy.weapon.bulletsLeft);
-        //sensor.AddObservation(Vector3.zero);
-        //sensor.AddObservation(Vector3.zero);
-        //sensor.AddObservation(0.0f);
+        sensor.AddObservation(player.Health);
+        sensor.AddObservation(enemy.Health);
+        sensor.AddObservation(enemy.weapon.bulletsLeft);
+        /*sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(Vector3.zero);
+        sensor.AddObservation(0.0f);*/
 
-        // Get a vector from the beak tip to the nearest flower
-        // Vector3 toPlayer = player.transform.position - transform.position;
-        //toPlayer = Vector3.zero;
-
-
-        //float dist = Vector3.Distance(player.transform.position, transform.position);
-
-        // Observe a normalized vector pointing to the nearest flower (1 observations)
-        //sensor.AddObservation(enemy.currentTime);
+       /* sensor.AddObservation(player.transform.position);
+        sensor.AddObservation(player.GetComponent<Rigidbody2D>().velocity);
+        Vector3 toPlayer = player.transform.position - transform.position;
+        Vector2 toPlayer2D = new Vector2(toPlayer.x, toPlayer.y);
+        sensor.AddObservation(Vector2.Dot(toPlayer2D.normalized, new Vector2(transform.right.x, transform.right.y).normalized));*/
+        //Debug.Log(Vector2.Dot(toPlayer2D.normalized, new Vector2(transform.right.x, transform.right.y).normalized));
     }
 
     public override void Heuristic(float[] actionsOut)
     {
         // Create placeholders for all movement/turning
-        float forward = 1f;
-        float left = 1f;
-        Vector3 up = Vector3.zero;
-        float shoot = 0f;
-        float yaw = 1f;
-
-        // Convert keyboard inputs to movement and turning
-        // All values should be between -1 and +1
-
-        // Forward/backward
-        if (Input.GetKey(KeyCode.W)) forward = 2f;
-        else if (Input.GetKey(KeyCode.S)) forward = 0f;
-
-        // Left/right
-        if (Input.GetKey(KeyCode.A)) left = 0f;
-        else if (Input.GetKey(KeyCode.D)) left = 2f;
-
-
-        if (Input.GetKey(KeyCode.Space))
+        if (!extModel)
         {
-            shoot = 1f;
+            float forward = 1f;
+            float left = 1f;
+            Vector3 up = Vector3.zero;
+            float shoot = 0f;
+            float yaw = 1f;
+
+            // Convert keyboard inputs to movement and turning
+            // All values should be between -1 and +1
+
+            // Forward/backward
+            if (Input.GetKey(KeyCode.W)) forward = 2f;
+            else if (Input.GetKey(KeyCode.S)) forward = 0f;
+
+            // Left/right
+            if (Input.GetKey(KeyCode.A)) left = 0f;
+            else if (Input.GetKey(KeyCode.D)) left = 2f;
+
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                shoot = 1f;
+            }
+
+            if (Input.GetKey(KeyCode.LeftArrow)) yaw = 0f;
+            else if (Input.GetKey(KeyCode.RightArrow)) yaw = 2f;
+
+            /*_mousePos = Input.mousePosition;
+            _mousePos.z = 5.23f;
+            Vector3 objectPos = Camera.main.WorldToScreenPoint(this.transform.position);
+            _mousePos.x -= objectPos.x;
+            _mousePos.y -= objectPos.y;
+
+            float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
+            angle = (angle - 360);
+           
+            while (true)
+                if (transform.rotation.eulerAngles.z - angle >= -180 && transform.rotation.eulerAngles.z - angle <= 180)
+                    break;
+                else
+                    angle = (angle + 360);
+
+            if (transform.rotation.eulerAngles.z -angle >1 )
+            {
+                yaw = 0f;
+            }
+            else if (transform.rotation.eulerAngles.z - angle <- 1)
+                yaw = 2f;
+            else
+                yaw = 1f;*/
+
+
+
+            actionsOut[0] = forward;
+            actionsOut[1] = left;
+            actionsOut[2] = yaw;
+            actionsOut[3] = shoot;
         }
+        if (extModel)
+        {
+            List<float> input = new List<float>();
+            var x = enemy.transform.GetChild(2).GetComponent<RayPerceptionSensorComponent2D>().GetRayPerceptionInput();
+            var y = RayPerceptionSensor.Perceive(x);
+            var rays = y.RayOutputs;
+            foreach (var ray in rays)
+            {
+                float[] vector = new float[10];
+                ray.ToFloatArray(8, 0, vector);
+                foreach (var o in vector)
+                    input.Add(o);
+            }
 
-        if (Input.GetKey(KeyCode.LeftArrow)) yaw = 0f;
-        else if (Input.GetKey(KeyCode.RightArrow)) yaw = 2f;
+            x = enemy.transform.GetChild(3).GetComponent<RayPerceptionSensorComponent2D>().GetRayPerceptionInput();
+            y = RayPerceptionSensor.Perceive(x);
+            rays = y.RayOutputs;
+            foreach (var ray in rays)
+            {
+                float[] vector = new float[10];
+                ray.ToFloatArray(8, 0, vector);
+                foreach (var o in vector)
+                    input.Add(o);
+            }
 
-        {/*{Vector3 _mousePos;
-        _mousePos = Input.mousePosition;
-        _mousePos.z = 5.23f;
-        Vector3 objectPos = Camera.main.WorldToScreenPoint(this.transform.position);
-        _mousePos.x -= objectPos.x;
-        _mousePos.y -= objectPos.y;
+            var obs = GetObservations();
+            foreach (float o in obs)
+                input.Add(o);
 
-        float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
-        //Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
-        //angle = angle - 90;
-        yaw = (angle / 180f) - 1f ;
-        // Turn left/right
-        if (Input.GetKey(KeyCode.LeftArrow)) yaw = 0f;
-        else if (Input.GetKey(KeyCode.RightArrow)) yaw = 2f;
-        else yaw = 1f;}*/
+
+            input2D.Add(input.ToArray());
+            input2D.RemoveAt(0);
+
+            var array = input2D.ToArray();
+           // Debug.Log(input2D.Count());
+            //using Tensor inputTensor = new Tensor(1 ,737, input.ToArray());
+            using Tensor inputTensor = new Tensor(0,10,737, 1);
+            for (int j = 0; j < 737; j++)
+                for (int r = 0; r < 10; r++)
+
+                    inputTensor[0,9-r, j,0] = array[r][j];
+            //Debug.Log(inputTensor[0, 1, 728, 0]);
+            worker.Execute(inputTensor);
+            Tensor outputTensor = worker.PeekOutput(output1);
+            actionsOut[0] = outputTensor.ArgMax()[0];
+            Debug.Log(actionsOut[0]);
+            outputTensor = worker.PeekOutput(output2);
+            actionsOut[1] = outputTensor.ArgMax()[0];
+            outputTensor = worker.PeekOutput(output3);
+            actionsOut[2] = outputTensor.ArgMax()[0];
+            outputTensor = worker.PeekOutput(output4);
+            actionsOut[3] = outputTensor.ArgMax()[0];
+            actionsOut[3] = 1f;
         }
-
-        // Combine the movement vectors and normalize
-        //Vector2 combined = (forward + left).normalized;
-
-        // Add the 3 movement values, pitch, and yaw to the actionsOut array
-        actionsOut[0] = forward;
-        actionsOut[1] = left;
-        actionsOut[2] = yaw;
-        actionsOut[3] = shoot;
-
 
 
     }
@@ -267,18 +375,22 @@ public class EnemyAI_1 : Agent
 
 
     #region collisions
-
-    /* private void OnCollisionEnter2D(Collision2D collision)
-     {
-         if (trainingMode)
-             AddReward(-.1f);
-     }
-
-     private void OnCollisionStay2D(Collision2D collision)
-     {
-         if (trainingMode)
-             AddReward(-.01f);
-     }
-     */
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (trainingMode)
+            AddReward(-.1f);
+    }
+    /*private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (trainingMode)
+            AddReward(-.01f);
+    }
+    */
     #endregion
+
+
+    
+    
+   
 }

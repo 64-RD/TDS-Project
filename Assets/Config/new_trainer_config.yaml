@@ -3,10 +3,10 @@ behaviors:
     trainer_type: ppo
     hyperparameters:
       batch_size: 2048
-      buffer_size: 20480
+      buffer_size: 8000
       learning_rate: 0.0003
       learning_rate_schedule: linear
-      num_epoch: 8
+      num_epoch: 5
     network_settings:
       normalize: false
       hidden_units: 256
@@ -17,8 +17,8 @@ behaviors:
         gamma: 0.99
         strength: 1.0
     keep_checkpoints: 5
-    checkpoint_interval: 500000
-    max_steps: 5000000
+    checkpoint_interval: 10000000
+    max_steps: 10000000
     time_horizon: 128
     summary_freq: 10000
     framework: tensorflow
