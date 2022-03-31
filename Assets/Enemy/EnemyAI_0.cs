@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// A Enemy Machine Learning Agent
@@ -24,7 +25,7 @@ public class EnemyAI_0 :Agent
 
     // The rigidbody of the agent
     private Rigidbody2D rigidbody;
-
+    public bool enabled = false;
     public Player player;
     public PlayerBehaviour_1 playerBehaviour1;
     public Transform firePoint;
@@ -61,19 +62,21 @@ public class EnemyAI_0 :Agent
         //float moveY = vectorAction[0] - 1;
 
         // Add force in the direction of the move vector
-        rigidbody.velocity = new Vector2(vectorAction[1] * moveSpeed, vectorAction[0] * moveSpeed);
+        if (enabled)
+        {
+            rigidbody.velocity = new Vector2(vectorAction[1] * moveSpeed, vectorAction[0] * moveSpeed);
 
-        // Get the current rotation
-        Vector3 rotationVector = transform.rotation.eulerAngles;
+            // Get the current rotation
+            Vector3 rotationVector = transform.rotation.eulerAngles;
 
+            // Calculate smooth rotation changes
+            //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
+            //smoothRotation = (vectorAction[2] - 1) * rotationSpeed * Time.fixedDeltaTime;
+            transform.rotation = Quaternion.Euler(0, 0, (vectorAction[2] + 1) * 180);
 
-        // Calculate smooth rotation changes
-        //smoothRotation = Mathf.MoveTowards(smoothRotation, vectorAction[2]-1, rotationSpeed * Time.fixedDeltaTime);
-        //smoothRotation = (vectorAction[2] - 1) * rotationSpeed * Time.fixedDeltaTime;
-        transform.rotation = Quaternion.Euler(0, 0, (vectorAction[2]+1)*180);
-
-        if(vectorAction[3]>0)
-         enemy.Shoot();
+            if (vectorAction[3] > 0)
+                enemy.Shoot();
+        }
         if(trainingMode)
             AddReward(-1f / MaxStep);
         
